@@ -10,6 +10,7 @@ body {
     height: 200px;
     width: 175px;
     margin: 0px 10px 0px 10px;
+    border-radius: 10px;
 }
 
 .play-box img {
@@ -18,21 +19,37 @@ body {
 }
 
 #chatbox {
+    position: relative;
     min-height: 200px;
     max-height: 400px;
+    width: 375px;
     border: 2px solid var(--green);
+    margin: 30px auto;
 }
 
 .chat-row {
     margin-top: 20px;
+    width: inherit;
+    position: relative;
 }
 
-.chat-history {
-
-    border: 3px solid black;
+#chat-form {
+    width: 370px;
+    height: 31px;
 }
 
 .chat-entry {
+    position:absolute;
+    bottom: -35px;
+    left: -2px;
     height: 35px;
+    width: 375px;
     border: 2px solid blue;
+}
+
+#chat-text {
+    width: 370px;
+    position: relative;
+    left: -14px;
+    height: 30px;
 }

@@ -15,19 +15,15 @@
 
     <title>RockPaperScizzors</title>
 
+    <script src="https://www.gstatic.com/firebasejs/3.6.5/firebase.js"></script>
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css">
-    <style>
-        @media print {
-            #ghostery-purple-box {
-                display: none !important
-            }
-        }
-    </style>
+    <script type="text/javascript" src="assets/javascript/app.js"></script>
 </head>
 
 <body>
@@ -46,7 +42,7 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <form class="navbar-form navbar-right">
                     <div class="form-group">
-                        <input type="text" placeholder="Player name" class="form-control">
+                        <input id="login-name" type="text" placeholder="Player name" class="form-control">
                     </div>
 
                     <button type="button" class="btn btn-success">Sign in</button>
@@ -68,7 +64,7 @@
         <div class="row justify-content-md-center">
             <div class="col-sm-1"></div>
             <div class="col-sm-3 play-box">
-                <img class="" src="assets/images/rock.png" alt="RPS">
+                <img src="assets/images/rock.png" alt="RPS">
             </div>
             <div class="col-sm-3 play-box">
                 <img src="assets/images/paper.png" alt="">
@@ -78,17 +74,28 @@
             </div>
             <div class="col-sm-2"></div>
         </div>
-        <div class="row chat-row">
+        <!-- <div class="row chat-row">
             <div class="col-sm-3"></div>
             <div id="chatbox" class="col-sm-6">
                 <div class="row">
                     <div class="col-sm-12 chat-history"></div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12 chat-entry"></div>
+                    <div class="col-sm-12 chat-entry">
+                        <input id="chat-text" class="form-control-text" type="text" name="chat-text" value="">
+                    </div>
                 </div>
             </div>
             <div class="col-sm-3"></div>
+        </div> -->
+
+        <div id="chatbox">
+            <div class="chat-history">
+
+            </div>
+            <div class="chat-entry">
+                <input id="chat-form" type="text" placeholder="Enter chat">
+            </div>
         </div>
 
         <hr>
