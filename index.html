@@ -1,122 +1,100 @@
 <!DOCTYPE html>
-<!-- saved from url=(0043)http://getbootstrap.com/examples/jumbotron/ -->
-<html lang="en">
+<html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="assets/images/scizzors.png">
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-
-    <title>RockPaperScizzors</title>
-
-    <script src="https://www.gstatic.com/firebasejs/3.6.5/firebase.js"></script>
-
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <script type="text/javascript" src="assets/javascript/moment.js" ></script>
-    <script type="text/javascript" src="assets/javascript/rps.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rps</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/Footer-Clean.css">
+    <link rel="stylesheet" href="assets/css/Login-Form-Dark.css">
+    <link rel="stylesheet" href="assets/css/Navigation-with-Button1.css">
+    <link rel="stylesheet" href="assets/css/Registration-Form-with-Photo.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-                <a class="navbar-brand" href="http://getbootstrap.com/examples/jumbotron/#">Rock your paper with scizzors</a>
+    <div>
+        <nav class="navbar navbar-inverse navigation-clean-button">
+            <div class="container">
+                <div class="navbar-header"><a class="navbar-brand navbar-link" href="#">Rock, Paper, Sizzors.</a>
+                    <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                </div>
+                <div class="collapse navbar-collapse" id="navcol-1">
+                    <ul class="nav navbar-nav"></ul>
+                    <p class="navbar-text navbar-right actions"> <a class="btn btn-success disabled action-button" role="button" href="#" style="background-color:#700;">Reset game data</a></p>
+                </div>
             </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <form class="navbar-form navbar-right">
-                    <div class="form-group">
-                        <input id="login-name" type="text" placeholder="Player name" class="form-control">
+        </nav>
+    </div>
+    <div class="register-photo">
+        <div class="form-container">
+            <div class="image-holder" style="/*height:75%;*/"></div>
+            <form method="post">
+                <h2 class="text-center">Sign in to play</h2>
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Your name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label class="control-label">
+                            <input type="checkbox">I promise that I will not run with scizzors.</label>
                     </div>
-
-                    <button type="button" id="sign-in" class="btn btn-success">Sign in</button>
-                    <button type="button" id="reset-button" class="btn btn-danger">Reset Game</button>
-
-                </form>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-        <div class="container">
-            <h1 id="announce">Login to start the game.</h1>
-            <p id="information">Rock, Paper, Scizzors multiplayer game backed by firebase. Coordination is provided by Google's firebase <i>on change</i> event.</p>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block" type="submit">Sign Up</button>
+                </div>
+            </form>
         </div>
     </div>
-
-    <div class="container ">
-        <!-- Example row of columns -->
-        <div class="row justify-content-md-center well">
-            <div class="col-sm-1"></div>
-            <div class="col-sm-3 play-box player1 player">
-                <img src="assets/images/rock.png" alt="RPS">
-            </div>
-            <div class="col-sm-3 play-box results">
-                <img src="assets/images/paper.png" alt="">
-            </div>
-            <div class="col-sm-3 play-box player2 player">
-                <img src="assets/images/scizzors.png" alt="">
-            </div>
-
-            <div class="col-sm-2"></div>
+    <div>
+        <div class="container">
+            <div class="row">
+    <div class="col-md-4 play-zone zone1"></div>
+    <div class="col-md-4 play-zone zone2"></div>
+    <div class="col-md-4 play-zone zone3"></div>
+</div>
         </div>
-        <!-- <div class="row chat-row">
-            <div class="col-sm-3"></div>
-            <div id="chatbox" class="col-sm-6">
+    </div>
+    <div>
+        <div class="container">
+            <div class="row">
+    <div id="chat-div" class="col-md-6 col-md-offset-3">
+        <div id="chat-box"></div>
+        <div id="chat-entry"></div>
+    </div>
+</div>
+        </div>
+    </div>
+    <div class="footer-clean">
+        <footer>
+            <div class="container">
                 <div class="row">
-                    <div class="col-sm-12 chat-history"></div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12 chat-entry">
-                        <input id="chat-text" class="form-control-text" type="text" name="chat-text" value="">
+                    <div class="col-md-4 col-sm-4 item">
+                        <h3>Services</h3>
+                        <ul>
+                            <li><a href="#">Web design</a></li>
+                            <li><a href="#">Development</a></li>
+                            <li><a href="#">Oracle DBA</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4 col-sm-4 item">
+                        <h3>About</h3>
+                        <ul>
+                            <li><a href="#">Game instructions</a></li>
+                            <li><a href="#">Game history</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4 item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a>
+                        <p class="copyright">Knapp Global Games © 2016</p>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3"></div>
-        </div> -->
-        <div class="row">
-
-
-        <div id="chatbox">
-            <div class="chat-history">
-            </div>
-            <div class="chat-entry">
-                <input id="chat-form" type="text" placeholder="Enter chat">
-            </div>
-        </div>
-        </div>
-        <hr>
-
-        <footer>
-            <p>© 2017 Knapp Global Games</p>
         </footer>
     </div>
-    <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-
-
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 
 </html>
