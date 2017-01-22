@@ -4,7 +4,7 @@ var rps = {
     ptrPromise: '',
     playerCount: 0,
     state: "init",
-
+    readOnly: false,
     com: {
         data: {
             users: [],
@@ -108,11 +108,12 @@ var rps = {
         if ( e.type === 'keypress' && key !== 13) {
             return false;
         }
-        if ( rps.com.data.state === "gameOn" ) {
+        if ( rps.com.data.state === "gameOn" ) {  // Game is already in progress, display only
             ptrGameInProgress.style.display = "block";
+            rps.readOnly = true;
             return false;
         }
-        
+
         var name = ptrName.value;
         var promise = ptrPromise.checked;
         console.log( "Name = " + name, ", Promise = ", promise );
