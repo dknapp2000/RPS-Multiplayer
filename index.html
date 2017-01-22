@@ -23,7 +23,8 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css">
-    <script type="text/javascript" src="assets/javascript/app.js"></script>
+    <script type="text/javascript" src="assets/javascript/moment.js" ></script>
+    <script type="text/javascript" src="assets/javascript/rps.js"></script>
 </head>
 
 <body>
@@ -45,7 +46,9 @@
                         <input id="login-name" type="text" placeholder="Player name" class="form-control">
                     </div>
 
-                    <button type="button" class="btn btn-success">Sign in</button>
+                    <button type="button" id="sign-in" class="btn btn-success">Sign in</button>
+                    <button type="button" id="reset-button" class="btn btn-danger">Reset Game</button>
+
                 </form>
             </div>
         </div>
@@ -55,23 +58,24 @@
     <div class="jumbotron">
         <div class="container">
             <h1 id="announce">Login to start the game.</h1>
-            <p id="information">Rock, Paper, Scizzors multiplayer game backed by firebase.  Coordination is provided by Google's firebase <i>on change</i> event.</p>
+            <p id="information">Rock, Paper, Scizzors multiplayer game backed by firebase. Coordination is provided by Google's firebase <i>on change</i> event.</p>
         </div>
     </div>
 
-    <div class="container">
+    <div class="container ">
         <!-- Example row of columns -->
-        <div class="row justify-content-md-center">
+        <div class="row justify-content-md-center well">
             <div class="col-sm-1"></div>
-            <div class="col-sm-3 play-box">
+            <div class="col-sm-3 play-box player1 player">
                 <img src="assets/images/rock.png" alt="RPS">
             </div>
-            <div class="col-sm-3 play-box">
+            <div class="col-sm-3 play-box results">
                 <img src="assets/images/paper.png" alt="">
             </div>
-            <div class="col-sm-3 play-box">
+            <div class="col-sm-3 play-box player2 player">
                 <img src="assets/images/scizzors.png" alt="">
             </div>
+
             <div class="col-sm-2"></div>
         </div>
         <!-- <div class="row chat-row">
@@ -88,16 +92,17 @@
             </div>
             <div class="col-sm-3"></div>
         </div> -->
+        <div class="row">
+
 
         <div id="chatbox">
             <div class="chat-history">
-
             </div>
             <div class="chat-entry">
                 <input id="chat-form" type="text" placeholder="Enter chat">
             </div>
         </div>
-
+        </div>
         <hr>
 
         <footer>
