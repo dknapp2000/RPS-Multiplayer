@@ -26,6 +26,7 @@ var rps = {
     ptrLoginSection: "",
     ptrLoggedIn: "",
     ptrResetButton: "",
+    ptrGameInProgress: "",
 
     comTemplate: "",
 
@@ -46,6 +47,7 @@ var rps = {
         ptrLoginSection = document.getElementById("login-section" );
         ptrLoggedIn = document.querySelectorAll(".logged-in");
         ptrResetButton = document.getElementById( "reset-data" );
+        ptrGameInProgress = document.getElementById( "game-in-progress" );
 
         firebase.initializeApp(rps.fireBaseConfig);
         rps.db = firebase.database();
@@ -102,9 +104,15 @@ var rps = {
     nameEntered: function(e) {
         var key = e.charCode || e.which;
         console.log( "nameEntered" );
+
         if ( e.type === 'keypress' && key !== 13) {
             return false;
         }
+        if ( rps.com.data.state === "gameOn" ) {
+            ptrGameInProgress.style.display = "block";
+            return false;
+        }
+        
         var name = ptrName.value;
         var promise = ptrPromise.checked;
         console.log( "Name = " + name, ", Promise = ", promise );
