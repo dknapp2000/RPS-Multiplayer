@@ -23,55 +23,65 @@
                 </div>
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav"></ul>
-                    <p class="navbar-text navbar-right actions"> <a class="btn btn-success disabled action-button" role="button" href="#" style="background-color:#700;">Reset game data</a></p>
+                    <p class="navbar-text navbar-right actions"> <a id="reset-data" class="btn btn-success disabled action-button" role="button" href="#" style="background-color:#700;">Reset game data</a></p>
                 </div>
             </div>
         </nav>
     </div>
-    <div class="register-photo">
+
+    <div id="login-section" class="register-photo">
         <div class="form-container">
-            <div class="image-holder" style="/*height:75%;*/"></div>
-            <form method="post">
+            <div class="image-holder"></div>
+            <form>
                 <h2 class="text-center">Sign in to play</h2>
+
+                <div id="you-must-promise" class="alert alert-warning alert-dismissible" role="alert" style="display: none;">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <strong>Warning!</strong>You must promise not to run with scizzors!
+                </div>
+
+
                 <div class="form-group">
-                    <input type="text" name="name" placeholder="Your name" class="form-control" />
+                    <input id="name" type="text" name="name" placeholder="Your name" class="form-control" />
                 </div>
                 <div class="form-group">
                     <div class="checkbox">
                         <label class="control-label">
-                            <input type="checkbox">I promise that I will not run with scizzors.</label>
+                            <input id="promise" type="checkbox">I promise that I will not run with scizzors.</label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-primary btn-block" type="submit">Sign Up</button>
+                    <button id="login-button" class="btn btn-primary btn-block" type="button">Sign Up</button>
                 </div>
             </form>
         </div>
     </div>
+
     <div>
-        <div class="container">
+        <div class="container logged-in">
             <div class="row">
-    <div class="col-md-4 play-zone zone1"></div>
-    <div class="col-md-4 play-zone zone2"></div>
-    <div class="col-md-4 play-zone zone3"></div>
-</div>
+                <div class="col-sm-4 play-zone zone1"></div>
+                <div class="col-sm-4 play-zone zone2"></div>
+                <div class="col-sm-4 play-zone zone3"></div>
+            </div>
         </div>
     </div>
     <div>
-        <div class="container">
+        <div class="container logged-in">
             <div class="row">
-    <div id="chat-div" class="col-md-6 col-md-offset-3">
-        <div id="chat-box"></div>
-        <div id="chat-entry"></div>
-    </div>
-</div>
+                <div id="chat-div" class="col-sm-6 col-sm-offset-3">
+                    <div id="chat-box"></div>
+                    <div id="chat-entry"></div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="footer-clean">
         <footer>
             <div class="container">
+                <hl>
                 <div class="row">
-                    <div class="col-md-4 col-sm-4 item">
+                    <div class="col-sm-4 col-sm-4 item">
                         <h3>Services</h3>
                         <ul>
                             <li><a href="#">Web design</a></li>
@@ -79,14 +89,14 @@
                             <li><a href="#">Oracle DBA</a></li>
                         </ul>
                     </div>
-                    <div class="col-md-4 col-sm-4 item">
+                    <div class="col-sm-4 col-sm-4 item">
                         <h3>About</h3>
                         <ul>
                             <li><a href="#">Game instructions</a></li>
                             <li><a href="#">Game history</a></li>
                         </ul>
                     </div>
-                    <div class="col-md-4 item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a>
+                    <div class="col-sm-4 item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a>
                         <p class="copyright">Knapp Global Games © 2016</p>
                     </div>
                 </div>
@@ -95,6 +105,11 @@
     </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.5/firebase.js"></script>
+    <script src="assets/js/moment.js"></script>
+    <script src="assets/js/rps.js"></script>
+
+    </script>
 </body>
 
 </html>

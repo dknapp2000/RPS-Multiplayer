@@ -21,3 +21,6 @@ div#chat-entry {
   border-top:0px;
 }
 
+.logged-in {
+    display: none;
+}
