@@ -64,9 +64,15 @@
     <div>
         <div class="container logged-in">
             <div class="row">
-                <div class="col-sm-4 play-zone zone1"></div>
+                <div class="col-sm-4 play-zone zone1">
+                  <div class="row player-name"></div>
+                  <div class="row chooser"></div>
+                </div>
                 <div class="col-sm-4 play-zone zone2"></div>
-                <div class="col-sm-4 play-zone zone3"></div>
+                <div class="col-sm-4 play-zone zone3">
+                  <div class="row player-name"></div>
+                  <div class="row chooser"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -75,7 +81,9 @@
             <div class="row">
                 <div id="chat-div" class="col-sm-6 col-sm-offset-3">
                     <div id="chat-box"></div>
-                    <div id="chat-entry"></div>
+                    <div id="chat-entry">
+                      <input id="chat-input" type="text" placeholder="Enter a chat message here."/>
+                    </div>
                 </div>
             </div>
         </div>
