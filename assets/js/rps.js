@@ -59,17 +59,38 @@ var rps = {
 
         // Grab a copy of the empty com object so we can reset the firebase data if requested.
         comTemplate = JSON.parse( JSON.stringify( rps.com ) );
-
+        /* The data names below will be "watched", any changes to these elements
+         * in the firebase database will be automatically reflected in the
+         * json object named rps.com.data.{name-of-the-watched-value}
+         *
+         * Additionally, any value that is set with rps.set() while being
+         * watched with rps.watch() will automatically be updated in all places;
+         * Player1 browser, player2 browser and in the firebase database.
+         *
+         * This provides a convienient means to manage the important data
+         * elements globally and with simplicity.
+         */
         rps.watch( "playerCount" );
         rps.watch( "state" );
         rps.watch( "users" );
     },
-
+    /* This is an important "setter" that stores data in the "/data" already
+     * in the firebase database.  This can be used in conjunction with the
+     * watch() method, together they provide a means to manage global game
+     * data.  "watched" values are immediately replicated in all client
+     * instances when altered in the database via the set method.
+     */
     set: function( key, value ) {
         rps.db.ref("/data/" + key ).set( value );
         rps.setGetLog( "Set:", key, value );
     },
-
+    /* This is essentially a "getter" method that will watch a specified
+     * elements under the "/data" area of the database.  If a change is
+     * noted this method will replicate the new data into the client's
+     * rps.com.data.{name-of-the-watched-value} object.
+     *
+     * Watched values may be scalars or json objects.   :-)
+     */
     watch: function( key ) {
         rps.db.ref("/data/" + key).on("value", function( snap ) {
             rps.com.data[key] = snap.val();
