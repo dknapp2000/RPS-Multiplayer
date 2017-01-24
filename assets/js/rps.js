@@ -13,10 +13,10 @@ var rps = {
             selectCount: 0,
             chatHistory: [ {
                 ts: moment().format('X'),
-                who: "RPS",
+                who: "Welcome",
                 text: "Enter a message to talk to your opponent."
             }, { ts: moment().format('X'),
-                 who: "RPS",
+                 who: "Welcome",
                  text: "Press 'RESET GAME DATA' and refresh pages to reset the game completly"
             }
             ],
@@ -253,7 +253,27 @@ var rps = {
 
         rps.ptrRounds.innerHTML = --rps.rounds;
 
-        setTimeout( rps.nextRound, 2000 );
+        if ( rps.rounds === 0 ) {
+            rps.gameOver();
+        } else {
+            setTimeout( rps.nextRound, 2000 );
+        }
+    },
+
+    gameOver: function() {
+            rps.cleanUpForTheNextRound();
+            rps.localChat( "GAME OVER" );
+            var message;
+
+            if ( rps.wins === rps.losses ) {
+                rps.localChat( "It was a tie game.", "RPS" );
+            } else {
+                if ( rps.wins > rps.losses ) {
+                    rps.localChat( "You were the winner.", "RPS");
+                } else {
+                    rps.localChat( "You were the loser." , "RPS");
+                }
+            }
     },
 
     nextRound: function() {
