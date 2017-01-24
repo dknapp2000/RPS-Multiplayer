@@ -3,7 +3,8 @@
   height:400px;
   border:1px solid black;
   padding:10px;
-  margin-top: 50px;
+  width: 30%;
+  margin: 50px 10px 10px 10px;
 }
 
 div#chat-box {
@@ -12,6 +13,14 @@ div#chat-box {
   margin-top:25px;
   padding: 5px;
   overflow: scroll;
+}
+
+.my-zone {
+    background-color: rgb(213, 255, 229);
+}
+
+.enemy {
+    background-color: rgb(246, 241, 242);
 }
 
 div#chat-div {
@@ -25,7 +34,7 @@ div#chat-entry {
 }
 
 .logged-in {
-    display: none;
+    display: none;;
 }
 
 #chat-input {
@@ -33,14 +42,25 @@ div#chat-entry {
   height: 100%;
 }
 
-.player-name {
-  height: 75px;
+.player-name, .zone2 .heading, .score-section {
+  height: 63px;
   background-color: #eff3f9;
   width: 100%;
   margin: auto;
   border-radius: 20px;
   text-align: center;
   font-size: 48px;
+  margin-top: 10px;
+  border: 1px solid #999;
+}
+
+.zone2 .heading {
+    font-weight: bold;
+}
+
+.zone2 p {
+    font-size: 36px;
+    padding-top: 7px;
 }
 
 .weapons {
@@ -51,4 +71,18 @@ div#chat-entry {
     display: block;
     margin: 0 auto;
     height:33%;
+    border-radius: 50%;
+}
+
+.weapons img:hover {
+    cursor: pointer;
+}
+
+.dim {
+    opacity: .25;
+}
+
+body {
+    background-image: url('../img/background.png');
+    box-sizing: border-box;
 }

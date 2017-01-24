@@ -10,11 +10,18 @@ var rps = {
             users: [],
             state: "ready",
             playerCount: 0,
+            selectCount: 0,
             chatHistory: [ {
                 ts: moment().format('X'),
                 who: "RPS",
-                text: "Would you like to play a game?"
-            }]
+                text: "Enter a message to talk to your opponent."
+            }, { ts: moment().format('X'),
+                 who: "RPS",
+                 text: "Press 'RESET GAME DATA' and refresh pages to reset the game completly"
+            }
+            ],
+            players: [ { id: 0, name: "", player: "", selection: "" },
+                       { id: 1, name: "", player: "", selection: "" }],
         }
     },
     me: { name: "", player: ""},
@@ -31,8 +38,30 @@ var rps = {
     ptrWeapons: "",
     ptrChatDisplayZone: "",
     ptrChatInput: "",
-
+    ptrZone1: "",
+    ptrZone2: "",
+    ptrZone3: "",
+    ptrRounds: "",
+    ptrWins: "",
+    ptrLosses: "",
+    ptrTies: "",
+    selection: [ "", "" ],
     comTemplate: "",
+    rounds: 5,
+    wins: 0,
+    losses: 0,
+    ties: 0,
+    scoreing: {
+        'rock-paper': 1,
+        'paper-scissors': 1,
+        'scissors-rock': 1,
+        'paper-rock': 0,
+        'rock-scissors': 0,
+        'scissors-paper': 0,
+        'paper-paper': -1,
+        'scissors-scissors': -1,
+        'rock-rock': -1
+    },
 
     'fireBaseConfig' : {
         apiKey: "AIzaSyCBWHV-dS9yN-ULjRItoa0ObQkjVlrZmBQ",
@@ -58,6 +87,15 @@ var rps = {
         rps.ptrWeapons = document.getElementById("weapons");
         rps.ptrChatDisplayZone = document.getElementById("chat-box");
         rps.ptrChatInput = document.getElementById("chat-input");
+        rps.ptrZone1 = document.querySelector(".zone1");
+        rps.ptrZone2 = document.querySelector(".zone2");
+        rps.ptrZone3 = document.querySelector(".zone3");
+        rps.ptrRounds = document.querySelector(".rounds");
+        rps.ptrWins = document.querySelector(".wins");
+        rps.ptrLosses = document.querySelector(".losses");
+        rps.ptrTies = document.querySelector(".ties");
+
+        rps.ptrRounds.innerHTML = rps.rounds;
 
         firebase.initializeApp(rps.fireBaseConfig);
         rps.db = firebase.database();
@@ -87,11 +125,20 @@ var rps = {
         rps.watch( "playerCount" );
         rps.watch( "state" );
         rps.watch( "users" );
-
+        rps.watch( "selectCount" );
+        rps.watch( "players/0" );
+        rps.watch( "players/1" );
+        /* The data elements below will have a function associated with the
+         * data element if firebase.  When the firebase value changes the
+         * callback that is bound to that value by this function will be called.
+         */
         rps.actOn( "players/0/name", rps.setName1 );
         rps.actOn( "players/1/name", rps.setName2 );
+        rps.actOn( "selectCount", rps.selectCountChanged );
 
         rps.db.ref("/data/chatHistory").on("child_added", rps.newChatLine );
+        rps.db.ref('/data/players/0/selection').on("value", function(snap) { rps.selection[0] = snap.val()});
+        rps.db.ref('/data/players/1/selection').on("value", function(snap) { rps.selection[1] = snap.val()});
     },
     /* This is an important "setter" that stores data in the "/data" already
      * in the firebase database.  This can be used in conjunction with the
@@ -114,6 +161,7 @@ var rps = {
         rps.db.ref("/data/" + key).on("value", function( snap ) {
             rps.com.data[key] = snap.val();
             rps.setGetLog( "Get:", key, snap.val());
+            console.log( rps.com.data );
         });
     },
     /* This logs set/get actions to the console.  It's a separate
@@ -139,6 +187,93 @@ var rps = {
     setName2: function( ) {
         var snap = arguments[0];
         rps.ptrPlayerName[1].innerHTML = snap.val();
+    },
+
+    selectCountChanged: function() {
+        var snap = arguments[0];
+        var selectCount = snap.val();
+
+        switch ( selectCount ) {
+            case 0:
+                // noop
+                break;
+            case 1:
+                // noop
+                break;
+            case 2:
+                rps.generateResults();
+                rps.set( "selectCount", 0 );
+                break;
+        }
+    },
+
+    generateResults: function() {
+        console.log( "generateResults:", rps.com.data );
+        var mySelection;
+        var yourSelection;
+
+        if ( rps.me.id === 0 ) {
+            mySelection = rps.selection[0];
+            yourSelection = rps.selection[1];
+        } else {
+            mySelection = rps.selection[1];
+            yourSelection = rps.selection[0];
+        }
+
+        console.log( "My selection was : " + mySelection );
+        console.log( "Other selection  : " + yourSelection );
+
+        rps.localChat( "Your opponent selected " + yourSelection );
+        rps.showYourSelection( yourSelection );
+
+        var scoreKey = mySelection + "-" + yourSelection;
+
+        var result = rps.scoreing[scoreKey];
+
+        switch ( result ) {
+            case -1:
+                // Tie
+                console.log( "TIE" );
+                rps.localChat( "Tie", "RPS" );
+                rps.ptrTies.innerHTML = ++rps.ties;
+                break;
+            case 0:
+                // I won
+                console.log( "I WON" );
+                rps.localChat( "You won", "RPS" );
+                rps.ptrWins.innerHTML = ++rps.wins;
+                break;
+            case 1:
+                // You won
+                console.log( "YOU WON" );
+                rps.localChat("You lost", "RPS" );
+                rps.ptrLosses.innerHTML = ++rps.losses;
+                break;
+        }
+
+        rps.ptrRounds.innerHTML = --rps.rounds;
+
+        setTimeout( rps.nextRound, 2000 );
+    },
+
+    nextRound: function() {
+        rps.cleanUpForTheNextRound();
+    },
+
+    showYourSelection: function( selected ) {
+        var ptrMyIcons = document.querySelectorAll( ".enemy img" );
+        Array.from( ptrMyIcons ).forEach( p => p.classList.add( "dim" ) );
+        var ptrSelected = document.querySelector( ".enemy img[data-what='" + selected + "']")
+        console.log( "PTRSELECTED: ", ptrSelected );
+        ptrSelected.classList.remove("dim");
+    },
+
+    localChat: function( text, pWho ) {
+        var who = pWho || rps.me.name;
+        var msg = document.createElement("span");
+        msg.innerHTML = "<i><b>"+ who + ": </b>" + text + "</i><br>";
+        rps.ptrChatDisplayZone.appendChild( msg );
+        rps.ptrChatDisplayZone.scrollTop = rps.ptrChatDisplayZone.scrollHeight;
     },
 
     newChatLine: function( ) {
@@ -174,8 +309,13 @@ var rps = {
         if ( e.type = "keypress" && key != 13 ) return;
         var text = this.value;
         this.value = "";
+        rps.addChat( text );
+    },
+
+    addChat( text, who ) {
+        var sender = who || rps.me.name;
         console.log( "Chat entered: ", text );
-        rps.db.ref("/data/chatHistory").push( { who: rps.me.name, ts: moment().format("X"), text: text });
+        rps.db.ref("/data/chatHistory").push( { who: sender, ts: moment().format("X"), text: text });
     },
 
     nameEntered: function(e) {
@@ -205,6 +345,17 @@ var rps = {
 
         rps.me.name = name;
         rps.me.id = rps.com.data.playerCount;
+        rps.me.player = "player" + ( rps.me.id + 1 );
+
+        if ( rps.me.id === 0 ) {
+            rps.ptrZone1.classList.add( "my-zone" );
+            rps.ptrZone3.classList.add( "enemy" );
+        } else {
+            rps.ptrZone3.classList.add("my-zone");
+            rps.ptrZone1.classList.add("enemy");
+        }
+
+        rps.activateIcons();
 
         rps.set("playerCount", ++rps.com.data.playerCount );
         rps.set("players/" + rps.me.id, rps.me );
@@ -215,6 +366,28 @@ var rps = {
             rps.set( "state", "gameOn" );
         }
         e.preventDefault();
+    },
+
+    activateIcons: function() {
+        var ptrIconsAll = document.querySelectorAll( ".my-zone img" );
+        Array.from( ptrIconsAll ).forEach( i => i.addEventListener("click", rps.weaponSelected ) );
+    },
+
+    weaponSelected: function(e) {
+        var ptrMyIcons = document.querySelectorAll( ".my-zone img" );
+        Array.from( ptrMyIcons ).forEach( p => p.removeEventListener( "click", rps.weaponSelected ) );
+        Array.from( ptrMyIcons ).forEach( p => p.classList.add( "dim" ) );
+        this.classList.remove("dim");
+        console.log( this );
+        rps.localChat( rps.me.name + " Selected " + this.dataset.what, "RPS" );
+        rps.set( "players/" + rps.me.id + "/selection", this.dataset.what );
+        rps.set( "selectCount", ++rps.com.data.selectCount );
+    },
+
+    cleanUpForTheNextRound() {
+        var ptrIcons = document.querySelectorAll(".my-zone img, .enemy img" );
+        Array.from( ptrIcons ).forEach( p => p.classList.remove("dim"));
+        rps.activateIcons();
     }
 }
 
