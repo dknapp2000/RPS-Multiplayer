@@ -46,6 +46,14 @@ var rps = {
     },
 
     ptrName: "",
+    ptrName: "",
+    ptrPromise: "",
+    ptrLoginButton: "",
+    ptrWarning: "",
+    ptrLoginSection: "",
+    ptrLoggedIn: "",
+    ptrResetButton: "",
+    ptrGameInProgress: "",
     ptrPromise: "",
     ptrLoginButton: "",
     ptrWarning: "",
@@ -97,14 +105,15 @@ var rps = {
     startup: function() {
         console.log("Function: startup");
         // Here is the one-time grab of all the document elements that we'll be using.
-        ptrName = document.getElementById('name');
-        ptrPromise = document.getElementById('promise');
-        ptrLoginButton = document.getElementById('login-button');
-        ptrWarning = document.getElementById('you-must-promise');
-        ptrLoginSection = document.getElementById("login-section");
-        ptrLoggedIn = document.querySelectorAll(".logged-in");
-        ptrResetButton = document.getElementById("reset-data");
-        ptrGameInProgress = document.getElementById("game-in-progress");
+        rps.ptrName = document.getElementById('name');
+        rps.ptrPromise = document.getElementById('promise');
+        rps.ptrLoginButton = document.getElementById('login-button');
+        rps.ptrWarning = document.getElementById('you-must-promise');
+        rps.ptrLoginSection = document.getElementById("login-section");
+        rps.ptrLoggedIn = document.querySelectorAll(".logged-in");
+        rps.ptrResetButton = document.getElementById("reset-data");
+        rps.ptrGameInProgress = document.getElementById("game-in-progress");
+
         rps.ptrPlayerName[0] = document.querySelector(".zone1 .player-name");
         rps.ptrPlayerName[1] = document.querySelector(".zone3 .player-name");
         rps.ptrWeapons = document.getElementById("weapons");
@@ -124,9 +133,9 @@ var rps = {
         rps.db = firebase.database();
         console.log('Firebase initialized.');
 
-        ptrName.addEventListener('keypress', rps.nameEntered);
-        ptrLoginButton.addEventListener("click", rps.nameEntered);
-        ptrResetButton.addEventListener("click", rps.resetData);
+        rps.ptrName.addEventListener('keypress', rps.nameEntered);
+        rps.ptrLoginButton.addEventListener("click", rps.nameEntered);
+        rps.ptrResetButton.addEventListener("click", rps.resetData);
         rps.ptrChatInput.addEventListener("keypress", rps.chatEntered);
 
         /* Grab a copy of the empty com object so we can reset the firebase
@@ -376,21 +385,21 @@ var rps = {
         console.log("nameEntered");
 
         if (rps.com.data.state === "gameOn") { // Game is already in progress, display only
-            ptrGameInProgress.style.display = "block";
+            rps.ptrGameInProgress.style.display = "block";
             rps.readOnly = true;
             return false;
         }
 
-        var name = ptrName.value;
-        var promise = ptrPromise.checked;
+        var name = rps.ptrName.value;
+        var promise = rps.ptrPromise.checked;
         console.log("Name = " + name, ", Promise = ", promise);
         if (promise === false) {
-            ptrWarning.style.display = "block";
+            rps.ptrWarning.style.display = "block";
             return false;
         }
-        ptrLoginSection.style.display = "none";
-        Array.from(ptrLoggedIn).forEach(d => d.style.display = "block");
-        ptrResetButton.classList.remove("disabled");
+        rps.ptrLoginSection.style.display = "none";
+        Array.from(rps.ptrLoggedIn).forEach(d => d.style.display = "block");
+        rps.ptrResetButton.classList.remove("disabled");
 
         rps.me.name = name;
         rps.me.id = rps.com.data.playerCount;
