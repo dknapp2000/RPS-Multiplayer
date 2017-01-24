@@ -3,12 +3,15 @@
   height:400px;
   border:1px solid black;
   padding:10px;
+  margin-top: 50px;
 }
 
 div#chat-box {
   height:250px;
   border:2px solid black;
   margin-top:25px;
+  padding: 5px;
+  overflow: scroll;
 }
 
 div#chat-div {
@@ -38,4 +41,14 @@ div#chat-entry {
   border-radius: 20px;
   text-align: center;
   font-size: 48px;
+}
+
+.weapons {
+    height: 280px;
+    padding-top: 10px;
+}
+.weapons img {
+    display: block;
+    margin: 0 auto;
+    height:33%;
 }

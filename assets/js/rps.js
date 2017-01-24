@@ -28,6 +28,9 @@ var rps = {
     ptrResetButton: "",
     ptrGameInProgress: "",
     ptrPlayerName: ["", ""],
+    ptrWeapons: "",
+    ptrChatDisplayZone: "",
+    ptrChatInput: "",
 
     comTemplate: "",
 
@@ -52,6 +55,9 @@ var rps = {
         ptrGameInProgress = document.getElementById( "game-in-progress" );
         rps.ptrPlayerName[0] = document.querySelector( ".zone1 .player-name" );
         rps.ptrPlayerName[1] = document.querySelector( ".zone3 .player-name" );
+        rps.ptrWeapons = document.getElementById("weapons");
+        rps.ptrChatDisplayZone = document.getElementById("chat-box");
+        rps.ptrChatInput = document.getElementById("chat-input");
 
         firebase.initializeApp(rps.fireBaseConfig);
         rps.db = firebase.database();
@@ -60,6 +66,7 @@ var rps = {
         ptrName.addEventListener('keypress', rps.nameEntered );
         ptrLoginButton.addEventListener( "click", rps.nameEntered );
         ptrResetButton.addEventListener( "click", rps.resetData );
+        rps.ptrChatInput.addEventListener("keypress", rps.chatEntered );
 
         /* Grab a copy of the empty com object so we can reset the firebase
          * data if requested.  (There must be a better way to do this)
@@ -80,12 +87,11 @@ var rps = {
         rps.watch( "playerCount" );
         rps.watch( "state" );
         rps.watch( "users" );
-        //rps.actOn( "players/0/name", rps.setName1() );
-        //rps.actOn( "players/1/name", rps.setName2() );
-        rps.db.ref("/data/players/0/name").on( "value", function(snap){
-          console.log( "players/0/name has changed", snap.val() );
-          rps.ptrPlayerName[0].innerHTML = snap.val() ;
-        } );
+
+        rps.actOn( "players/0/name", rps.setName1 );
+        rps.actOn( "players/1/name", rps.setName2 );
+
+        rps.db.ref("/data/chatHistory").on("child_added", rps.newChatLine );
     },
     /* This is an important "setter" that stores data in the "/data" already
      * in the firebase database.  This can be used in conjunction with the
@@ -122,17 +128,25 @@ var rps = {
      * individual data elements and act (callback) on any change.
      */
     actOn: function( key, callback ) {
-      rps.db.ref("/data/" + key).on( "value", callback( snap ) );
+        rps.db.ref("/data/" + key).on( "value", callback );
     },
 
-    setName1: function( snap ) {
-        console.log( "setName1: ", snap.val() );
+    setName1: function( ) {
+        var snap = arguments[0];
         rps.ptrPlayerName[0].innerHTML = snap.val();
     },
 
-    setName1: function( snap ) {
-        console.log( "setName1: ", snap.val() );
+    setName2: function( ) {
+        var snap = arguments[0];
         rps.ptrPlayerName[1].innerHTML = snap.val();
+    },
+
+    newChatLine: function( ) {
+        var snap = arguments[0].val();
+        var msg = document.createElement("span");
+        msg.innerHTML = "<b>"+ snap.who + ": </b>" + snap.text + "<br>";
+        rps.ptrChatDisplayZone.appendChild( msg );
+        rps.ptrChatDisplayZone.scrollTop = rps.ptrChatDisplayZone.scrollHeight;
     },
 
     updateState: function( snap ) {
@@ -155,13 +169,23 @@ var rps = {
         rps.db.ref().set( comTemplate );
     },
 
+    chatEntered: function( e ) {
+        var key = e.charCode || e.which;
+        if ( e.type = "keypress" && key != 13 ) return;
+        var text = this.value;
+        this.value = "";
+        console.log( "Chat entered: ", text );
+        rps.db.ref("/data/chatHistory").push( { who: rps.me.name, ts: moment().format("X"), text: text });
+    },
+
     nameEntered: function(e) {
         var key = e.charCode || e.which;
-        console.log( "nameEntered" );
 
         if ( e.type === 'keypress' && key !== 13) {
             return false;
         }
+        console.log( "nameEntered" );
+
         if ( rps.com.data.state === "gameOn" ) {  // Game is already in progress, display only
             ptrGameInProgress.style.display = "block";
             rps.readOnly = true;
