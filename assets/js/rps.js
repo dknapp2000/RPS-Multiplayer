@@ -78,7 +78,7 @@ var rps = {
         "", ""
     ],
     comTemplate: "",
-    rounds: 1,
+    rounds: 5,
     wins: 0,
     losses: 0,
     ties: 0,
