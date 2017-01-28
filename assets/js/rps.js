@@ -78,7 +78,7 @@ var rps = {
         "", ""
     ],
     comTemplate: "",
-    rounds: 5,
+    rounds: 1,
     wins: 0,
     losses: 0,
     ties: 0,
@@ -243,6 +243,13 @@ var rps = {
         }
     },
 
+    resetCounts: function() {
+        rps.ptrWins.innerHTML = 0;
+        rps.ptrLosses.innerHTML = 0;
+        rps.ptrTies.innerHTML = 0;
+        rps.ptrRounds = rps.rounds;
+    },
+
     generateResults: function() {
         console.log("generateResults:", rps.com.data);
         var mySelection;
@@ -307,10 +314,19 @@ var rps = {
         } else {
             if (rps.wins > rps.losses) {
                 rps.localChat("You were the winner.", "RPS");
+                $("#modal-message").text( "You were the winner!")
             } else {
                 rps.localChat("You were the loser.", "RPS");
+                $("#modal-message").text( "You were the loser!")
             }
         }
+        $("#myModal").modal();
+        rps.resetData();
+        rps.resetCounts();
+        rps.cleanUpForTheNextRound();
+        $('#myModal').on('hidden.bs.modal', function () {
+            location.reload();
+        })
     },
 
     nextRound: function() {
